@@ -1,0 +1,104 @@
+PO16 
+1 zad 
+using System;
+
+public class LiczbaZespolona
+{
+    public double Rzeczywista { get; set; }
+    public double Urojona { get; set; }
+
+    public LiczbaZespolona(double rzeczywista, double urojona)
+    {
+        Rzeczywista = rzeczywista;
+        Urojona = urojona;
+    }
+
+    // Przeciążenie operatora dzielenia (/)
+    public static LiczbaZespolona operator /(LiczbaZespolona z1, LiczbaZespolona z2)
+    {
+        double mianownik = z2.Rzeczywista * z2.Rzeczywista + z2.Urojona * z2.Urojona;
+        double rzeczywista = (z1.Rzeczywista * z2.Rzeczywista + z1.Urojona * z2.Urojona) / mianownik;
+        double urojona = (z1.Urojona * z2.Rzeczywista - z1.Rzeczywista * z2.Urojona) / mianownik;
+        return new LiczbaZespolona(rzeczywista, urojona);
+    }
+
+    public override string ToString() => $"{Rzeczywista} + {Urojona}i";
+}
+
+class Program
+{
+    static void Main()
+    {
+        LiczbaZespolona z1 = new LiczbaZespolona(4, 2);
+        LiczbaZespolona z2 = new LiczbaZespolona(3, -1);
+
+        LiczbaZespolona wynik = z1 / z2;
+        Console.WriteLine($"Wynik dzielenia: {wynik}");
+    }
+}
+zad 2
+using System;
+
+public class Wektor
+{
+    public double X { get; set; }
+    public double Y { get; set; }
+
+    public Wektor(double x, double y)
+    {
+        X = x;
+        Y = y;
+    }
+
+    public double Dlugosc => Math.Sqrt(X * X + Y * Y);
+
+    // Przeciążenie operatora ">"
+    public static bool operator >(Wektor w1, Wektor w2) => w1.Dlugosc > w2.Dlugosc;
+
+    // Przeciążenie operatora "<"
+    public static bool operator <(Wektor w1, Wektor w2) => w1.Dlugosc < w2.Dlugosc;
+
+    public override string ToString() => $"({X}, {Y})";
+}
+
+class Program
+{
+    static void Main()
+    {
+        Wektor w1 = new Wektor(3, 4);
+        Wektor w2 = new Wektor(6, 8);
+
+        Console.WriteLine($"Czy {w1} > {w2}? {w1 > w2}");
+        Console.WriteLine($"Czy {w1} < {w2}? {w1 < w2}");
+    }
+}
+zad 4
+using System;
+
+public class Logika
+{
+    public bool Wartość { get; set; }
+
+    public Logika(bool wartość)
+    {
+        Wartość = wartość;
+    }
+
+    public static Logika operator &(Logika l1, Logika l2) => new Logika(l1.Wartość && l2.Wartość);
+    public static Logika operator |(Logika l1, Logika l2) => new Logika(l1.Wartość || l2.Wartość);
+
+    public override string ToString() => Wartość ? "PRAWDA" : "FAŁSZ";
+}
+
+class Program
+{
+    static void Main()
+    {
+        Logika a = new Logika(true);
+        Logika b = new Logika(false);
+
+        Console.WriteLine($"a && b = {a & b}");
+        Console.WriteLine($"a || b = {a | b}");
+    }
+}
+
